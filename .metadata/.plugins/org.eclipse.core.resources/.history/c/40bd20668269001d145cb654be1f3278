@@ -1,5 +1,0 @@
-package edu.meyfp.alumnos.repository.entity;
-
-public class Alumno {
-
-}
