@@ -14,5 +14,10 @@ import edu.meyfp.alumnos.repository.entity.Alumno;
 public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
 	
 	//ABMC - CRUD
+	
+	//KEYWORD Query - Consultas por palabra
+	
+		//1 OBTENER EL LISTADO DE ALUMNOS EN UN RANGO DE EDAD
+		public Iterable<Alumno> findByEdadBetween (int edad_min, int edad_max);
 
 }

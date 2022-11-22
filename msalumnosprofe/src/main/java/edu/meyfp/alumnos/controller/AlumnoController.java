@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.meyfp.alumnos.repository.entity.Alumno;
@@ -167,5 +168,20 @@ public class AlumnoController {
 					
 		
 		return responseEntity;//representa el HTTP
+	}
+	
+	
+	@GetMapping("/listar-alumnos-rango-edad") //GET http://localhost:8081/alumno/listar-alumnos-rango-edad?edad1=17&edad2=38
+	public ResponseEntity<?> listarAlumnosRangoEdad(@RequestParam(name = "edad1") int edad1, @RequestParam(name = "edad2") int edad2)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			lista_alumnos = this.alumnoService.findByEdadBetween(edad1, edad2);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+		
+		
+		return responseEntity;
+		
 	}
 }
