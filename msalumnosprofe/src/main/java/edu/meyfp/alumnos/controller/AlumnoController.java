@@ -1,11 +1,18 @@
 package edu.meyfp.alumnos.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +39,8 @@ public class AlumnoController {
 	@Autowired
 	AlumnoService alumnoService;
 	
+	Logger logger = LoggerFactory.getLogger(AlumnoController.class);
+	
 	@GetMapping("/obtener-alumno-test") //GET http://localhost:8081/alumno/obtener-alumno-test
 	public Alumno obtenerAlumnoTest()
 	{
@@ -51,8 +60,10 @@ public class AlumnoController {
 		ResponseEntity<?> responseEntity = null;
 		Iterable<Alumno> lista_alumnos = null;
 		
+			logger.debug("Entrando en listarAlumnos()" );
 			lista_alumnos = this.alumnoService.findAll();
 			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo en listarAlumnos() "  + lista_alumnos);
 		
 		return responseEntity;//representa el HTTP
 	}
@@ -94,34 +105,65 @@ public class AlumnoController {
 	}
 	
 	
+	private ResponseEntity<?> obtenerErrores (BindingResult bindingResult)
+	{
+		ResponseEntity<?> responseEntity = null;
+		List<ObjectError> listaErrores = null;
+		
+		
+				listaErrores = bindingResult.getAllErrors();
+				responseEntity = ResponseEntity.badRequest().body(listaErrores);
+				listaErrores.forEach(objeto_error -> {
+					logger.error(objeto_error.toString());
+				});
+		
+		return responseEntity;
+	}
+	
 	@PostMapping //POST http://localhost:8081/alumno/
-	public ResponseEntity<?> insertarAlumno(@RequestBody Alumno alumno)
+	public ResponseEntity<?> insertarAlumno(@Valid @RequestBody Alumno alumno, BindingResult bindingResult)
 	{
 		ResponseEntity<?> responseEntity = null;
 		Alumno alumno_insertado = null;
 		
-			alumno_insertado = this.alumnoService.save(alumno);
-			responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumno_insertado);//201
+			if (bindingResult.hasErrors())
+			{
+				logger.debug("el alumno trae errores -POST" );
+				responseEntity = obtenerErrores(bindingResult);
+			} else {
+				logger.debug("el alumno ha superado la validación POST" );
+				alumno_insertado = this.alumnoService.save(alumno);
+				responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumno_insertado);//201
+			}
+			
 		
 		return responseEntity;//representa el HTTP
 	}
 	
 	
 	@PutMapping("/{id}") //PUT http://localhost:8081/alumno/3
-	public ResponseEntity<?> actualizarAlumno(@RequestBody Alumno alumno, @PathVariable Long id)
+	public ResponseEntity<?> actualizarAlumno(@Valid @RequestBody Alumno alumno, BindingResult bindingResult, @PathVariable Long id)
 	{
 		ResponseEntity<?> responseEntity = null;
 		Optional<Alumno> optional_alumno = null;
 		
-			optional_alumno = this.alumnoService.update(alumno, id);
-			if (optional_alumno.isPresent())
+			if (bindingResult.hasErrors())
 			{
-				//exsitías un alumno con ese id
-				Alumno alumno_modificado = optional_alumno.get();//200
-				responseEntity = ResponseEntity.ok(alumno_modificado);
+				logger.debug("el alumno trae errores - PUT" );
+				responseEntity = obtenerErrores(bindingResult);
 			} else {
-				responseEntity = ResponseEntity.notFound().build();//404
+				logger.debug("el alumno ha superado la validación - PUT" );
+				optional_alumno = this.alumnoService.update(alumno, id);
+				if (optional_alumno.isPresent())
+				{
+					//exsitías un alumno con ese id
+					Alumno alumno_modificado = optional_alumno.get();//200
+					responseEntity = ResponseEntity.ok(alumno_modificado);
+				} else {
+					responseEntity = ResponseEntity.notFound().build();//404
+				}
 			}
+			
 					
 		
 		return responseEntity;//representa el HTTP

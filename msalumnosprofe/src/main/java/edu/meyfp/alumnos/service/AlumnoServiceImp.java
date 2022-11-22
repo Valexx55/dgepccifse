@@ -23,6 +23,14 @@ public class AlumnoServiceImp implements AlumnoService{
 	EntityManager entityManager;
 	
 
+	//**
+	/*@Transactional es la anotación "estrella" de la POA programación orientada a Aspectos
+	 * hace que se inicie la transaccion antes de la ejecución del método así anotado
+	 * si no hay ningún fallo, al final del método, se ejcuta un commit
+	 * si lo hay, se ejecuta un rollback automáticamente*/
+	/***/
+	
+	
 	@Override
 	@Transactional (readOnly = true)
 	public Iterable<Alumno> findAll() {
