@@ -84,10 +84,11 @@ public class AlumnoController {
 	public ResponseEntity<?> borrarAlumnoPorId(@PathVariable Long id)
 	{
 		ResponseEntity<?> responseEntity = null;
-		
+			
+			
 			this.alumnoService.deleteById(id);
 			responseEntity = ResponseEntity.ok().build();
-			
+						
 		
 		return responseEntity;//representa el HTTP
 	}

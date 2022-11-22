@@ -2,6 +2,8 @@ package edu.meyfp.alumnos.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class AlumnoServiceImp implements AlumnoService{
 	
 	@Autowired
 	AlumnoRepository alumnoRepository;
+	
+	@Autowired
+	EntityManager entityManager;
 	
 
 	@Override
@@ -36,12 +41,32 @@ public class AlumnoServiceImp implements AlumnoService{
 	@Transactional//readonly false
 	public Alumno save(Alumno alumno) {
 		// TODO Auto-generated method stub
+		Alumno alumno_nuevo = null;
+		
+			alumno_nuevo = alumnoRepository.save(alumno);
+			//var nombre= "Vale";
+			//nombre.charAt(4);
+		
+		return alumno_nuevo;
+	}
+	
+	@Override
+	@Transactional//readonly false
+	public Alumno save2(Alumno alumno) {
+		// TODO Auto-generated method stub
+		
+		//this.entityManager.getTransaction().begin();
+		
+		//long id_insertado = this.entityManager.
+		
 		return alumnoRepository.save(alumno);
 	}
 
 	@Override
 	@Transactional
 	public void deleteById(Long id) {
+		//this.alumnoRepository.existsById(id); //una opción para asegurarme de que existe un registro con ese id, pero aumenta la complejida
+		
 		this.alumnoRepository.deleteById(id);
 		
 	}

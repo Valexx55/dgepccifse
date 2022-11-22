@@ -12,6 +12,8 @@ public interface AlumnoService {
 	
 	public Alumno save (Alumno alumno);
 	
+	public Alumno save2 (Alumno alumno); //alternativa Óscar Portela
+	
 	public void deleteById(Long id);
 	
 	public Optional<Alumno> update (Alumno alumno, Long id);
