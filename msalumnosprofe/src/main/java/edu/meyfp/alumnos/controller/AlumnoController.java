@@ -184,4 +184,47 @@ public class AlumnoController {
 		return responseEntity;
 		
 	}
+	
+	@GetMapping("/patron/{nombre}") //GET http://localhost:8081/alumno/patron/
+	public ResponseEntity<?> listarAlumnosPatron(@PathVariable String nombre)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en listarAlumnosPatron()");
+			lista_alumnos = this.alumnoService.findByNombreLike(nombre);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de listarAlumnosPatron()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	
+	@GetMapping("/busquedaPorNombreOApellidoJQLP/{patron}") //GET http://localhost:8081/alumno/busquedaPorNombreOApellidoJQLP/pepe
+	public ResponseEntity<?> busquedaPorNombreOApellidoJQLP(@PathVariable String patron)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en busquedaPorNombreOApellidoJQLP()");
+			lista_alumnos = this.alumnoService.buscarPorNombreOApellidoJQPL(patron);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de busquedaPorNombreOApellidoJQLP()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	@GetMapping("/busquedaPorNombreOApellidoNativa/{patron}") //GET http://localhost:8081/alumno/busquedaPorNombreOApellidoNativa/pepe
+	public ResponseEntity<?> busquedaPorNombreOApellidoNativa(@PathVariable String patron)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en busquedaPorNombreOApellidoNativa()");
+			lista_alumnos = this.alumnoService.buscarPorNombreOApellidoNativa(patron);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de busquedaPorNombreOApellidoNativa()");
+			
+		return responseEntity;//representa el HTTP
+	}
 }

@@ -1,5 +1,6 @@
 package edu.meyfp.alumnos.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -105,6 +106,46 @@ public class AlumnoServiceImp implements AlumnoService{
 	public Iterable<Alumno> findByEdadBetween(int edad_min, int edad_max) {
 		
 		return this.alumnoRepository.findByEdadBetween(edad_min, edad_max);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<Alumno> findByNombreLike(String nombre) {
+		return this.alumnoRepository.findByNombreLike("%"+nombre+"%");
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<Alumno> buscarPorNombreOApellidoJQPL(String patron) {
+		
+		return this.alumnoRepository.buscarPorNombreOApellidoJQPL(patron);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<Alumno> buscarPorNombreOApellidoNativa (String nombre){
+		return this.alumnoRepository.buscarPorNombreOApellidoNativa(nombre);
+	}
+
+	@Override
+	@Transactional //AUNQUE EL PROCEDIMIENTO NO MODIFIQUE LA BASE DE DATOS, HAY QUE DEJAR READ_ONLY A FALSE
+	public Iterable<Alumno> procedimientoAlumnosAltaHoy() {
+		
+		return this.alumnoRepository.procedimientoAlumnosAltaHoy();
+	}
+
+	@Override
+	@Transactional
+	public Map<String, Number> procedimientosEstadisticosEdad() {
+
+		return this.alumnoRepository.procedimientosEstadisticosEdad(0, 0, 0);//indico parametros ficción para que concuerde con la cabcera del procedimiento
+	}
+
+	@Override
+	@Transactional
+	public Iterable<Alumno> procedimientoAlumnosNombreComo(String patron) {
+		
+		return this.procedimientoAlumnosNombreComo(patron);
 	}
 
 }

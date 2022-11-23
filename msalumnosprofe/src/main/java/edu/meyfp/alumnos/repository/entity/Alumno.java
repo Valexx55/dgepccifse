@@ -7,7 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
 import javax.persistence.PrePersist;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +24,26 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "alumnos")
+@NamedStoredProcedureQueries(
+		{
+		@NamedStoredProcedureQuery (name = "Alumno.alumnosRegistradosHoy", procedureName = "obtenerAlumnosRegistradosHoy", resultClasses = edu.meyfp.alumnos.repository.entity.Alumno.class),
+		@NamedStoredProcedureQuery //OJO FALLO AUNQUE SÓLO SEA UN PARÁMETRO DE SALIDA OUT, HAY QUE PONERLO DE ENTRADA/SALIDA INOUT
+		(name = "Alumno.alumnosEdadMediaMinMax" , procedureName = "calcular_max_min_media_edad",
+		parameters = {
+				@StoredProcedureParameter (mode = ParameterMode.INOUT, name = "edadmax", type = Integer.class),
+				@StoredProcedureParameter (mode = ParameterMode.INOUT, name = "edadmin", type = Integer.class),
+				@StoredProcedureParameter (mode = ParameterMode.INOUT, name = "edadmedia", type = Float.class)
+				
+			}
+		),
+		@NamedStoredProcedureQuery(name = "Alumno.alumnosNombreComo", procedureName = "obtenerAlumnosConNombreComo",
+		parameters = {
+						@StoredProcedureParameter (mode = ParameterMode.IN, name = "patron", type = String.class),
+						
+						
+					} , resultClasses = edu.meyfp.alumnos.repository.entity.Alumno.class
+				)
+		})
 public class Alumno {
 	
 	@Id
