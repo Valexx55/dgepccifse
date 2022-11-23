@@ -3,6 +3,8 @@ package edu.meyfp.alumnos.service;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -36,5 +38,9 @@ public interface AlumnoService {
 	public Map<String, Number> procedimientosEstadisticosEdad ();
 
 	public Iterable<Alumno> procedimientoAlumnosNombreComo (String patron);
+	
+	public Page<Alumno> findAll (Pageable pageable);
+	
+	public Page<Alumno> buscarPorNombreOApellidoJQPLPaginado (String nombre, Pageable pageable);
 
 }

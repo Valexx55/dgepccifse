@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,6 +148,20 @@ public class AlumnoServiceImp implements AlumnoService{
 	public Iterable<Alumno> procedimientoAlumnosNombreComo(String patron) {
 		
 		return this.alumnoRepository.procedimientoAlumnosNombreComo("%"+patron+"%");
+	}
+
+	@Override
+	@Transactional (readOnly = true)
+	public Page<Alumno> findAll(Pageable pageable) {
+		
+		return this.alumnoRepository.findAll(pageable);
+	}
+
+	@Override
+	@Transactional (readOnly = true)
+	public Page<Alumno> buscarPorNombreOApellidoJQPLPaginado(String nombre, Pageable pageable) {
+		
+		return this.alumnoRepository.buscarPorNombreOApellidoJQPLPaginado(nombre, pageable);
 	}
 
 }

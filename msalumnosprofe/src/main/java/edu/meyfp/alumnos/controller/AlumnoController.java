@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -267,6 +268,36 @@ public class AlumnoController {
 			lista_alumnos = this.alumnoService.procedimientoAlumnosNombreComo(patron);
 			responseEntity = ResponseEntity.ok(lista_alumnos);
 			logger.debug("Saliendo de procedmientoBuscarNombreComo()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	
+	@GetMapping("/pagina") //GET http://localhost:8081/alumno/pagina?page=0&size=2
+	public ResponseEntity<?> listarAlumnosPaginacion(Pageable pageable)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en listarAlumnosPaginacion()");
+			lista_alumnos = this.alumnoService.findAll(pageable);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de listarAlumnosPaginacion()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	
+	@GetMapping("/nombreOApellidoPaginado/{patron}") //GET http://localhost:8081/alumno/nombreOApellidoPaginado/r?page=0&size=2
+	public ResponseEntity<?> nombreOApellidoPaginado(@PathVariable String patron, Pageable pageable)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en nombreOApellidoPaginado()");
+			lista_alumnos = this.alumnoService.buscarPorNombreOApellidoJQPLPaginado(patron, pageable);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de nombreOApellidoPaginado()");
 			
 		return responseEntity;//representa el HTTP
 	}

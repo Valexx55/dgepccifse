@@ -2,9 +2,12 @@ package edu.meyfp.alumnos.repository;
 
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +19,8 @@ import edu.meyfp.alumnos.repository.entity.Alumno;
  *
  */
 @Repository
-public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
+public interface AlumnoRepository extends PagingAndSortingRepository<Alumno, Long> {
+//public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
 	
 	//ABMC - CRUD
 	
@@ -28,11 +32,20 @@ public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
 		//TODO 2 OBTENER EL LISTADO DE ALUMNOS CUYO NOMBRE CUMPLA UN PATRÓN
 		public Iterable<Alumno> findByNombreLike (String nombre);
 		
+		//ejemplo por completar //TODO la capa de servicio y el controlador
+		public Page<Alumno> findByEdadBetween (int edad_min, int edad_max, Pageable p);
+		
+		
+		
 	//JPQL "Agnóstico" - JPA
 		
 		//3 BÚSQUEDAD DE ALUMNOS POR NOMBRE O APELLIDO
 		@Query("SELECT a FROM Alumno a WHERE a.nombre LIKE %?1% or a.apellido LIKE %?1%")
 		public Iterable<Alumno> buscarPorNombreOApellidoJQPL (String nombre);
+		
+		//3.1 BÚSQUEDAD DE ALUMNOS POR NOMBRE O APELLIDO PAGINADO
+		@Query("SELECT a FROM Alumno a WHERE a.nombre LIKE %?1% or a.apellido LIKE %?1%")
+		public Page<Alumno> buscarPorNombreOApellidoJQPLPaginado (String nombre, Pageable pageable);
 		
 	//NATIVAS - SQL Adaptado a la base de datos subyacente
 		@Query(value="SELECT * FROM alumnos a WHERE a.nombre LIKE %?1% or a.apellido LIKE %?1%", nativeQuery = true)
