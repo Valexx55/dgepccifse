@@ -142,10 +142,10 @@ public class AlumnoServiceImp implements AlumnoService{
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = false)
 	public Iterable<Alumno> procedimientoAlumnosNombreComo(String patron) {
 		
-		return this.procedimientoAlumnosNombreComo(patron);
+		return this.alumnoRepository.procedimientoAlumnosNombreComo("%"+patron+"%");
 	}
 
 }

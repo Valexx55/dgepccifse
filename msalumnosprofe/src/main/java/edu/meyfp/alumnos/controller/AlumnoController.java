@@ -2,6 +2,7 @@ package edu.meyfp.alumnos.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -224,6 +225,48 @@ public class AlumnoController {
 			lista_alumnos = this.alumnoService.buscarPorNombreOApellidoNativa(patron);
 			responseEntity = ResponseEntity.ok(lista_alumnos);
 			logger.debug("Saliendo de busquedaPorNombreOApellidoNativa()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	@GetMapping("/procedimientoAlumnosAltaHoy") //GET http://localhost:8081/alumno/procedimientoAlumnosAltaHoy
+	public ResponseEntity<?> procedimientoAlumnosAltaHoy()
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en procedimientoAlumnosAltaHoy()");
+			lista_alumnos = this.alumnoService.procedimientoAlumnosAltaHoy();
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de procedimientoAlumnosAltaHoy()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	@GetMapping("/procedimientoEstadisticosEdad") //GET http://localhost:8081/alumno/procedimientoEstadisticosEdad
+	public ResponseEntity<?> procedimientoEstadisticosEdad()
+	{
+		ResponseEntity<?> responseEntity = null;
+		Map<String, Number> valores_edad = null;
+		
+			logger.debug("Entrando en procedimientoEstadisticosEdad()");
+			valores_edad = this.alumnoService.procedimientosEstadisticosEdad();
+			responseEntity = ResponseEntity.ok(valores_edad);
+			logger.debug("Saliendo de procedimientoEstadisticosEdad()");
+			
+		return responseEntity;//representa el HTTP
+	}
+	
+	@GetMapping("/procedmientoBuscarNombreComo/{patron}") //GET http://localhost:8081/alumno/procedmientoBuscarNombreComo/pepe
+	public ResponseEntity<?> procedmientoBuscarNombreComo(@PathVariable String patron)
+	{
+		ResponseEntity<?> responseEntity = null;
+		Iterable<Alumno> lista_alumnos = null;
+		
+			logger.debug("Entrando en procedmientoBuscarNombreComo()");
+			lista_alumnos = this.alumnoService.procedimientoAlumnosNombreComo(patron);
+			responseEntity = ResponseEntity.ok(lista_alumnos);
+			logger.debug("Saliendo de procedmientoBuscarNombreComo()");
 			
 		return responseEntity;//representa el HTTP
 	}
