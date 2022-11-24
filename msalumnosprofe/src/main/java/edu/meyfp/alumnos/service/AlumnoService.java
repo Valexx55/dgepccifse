@@ -5,9 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.query.Procedure;
-import org.springframework.data.repository.query.Param;
 
+import edu.meyfp.alumnos.dto.FraseChuckNorris;
 import edu.meyfp.alumnos.repository.entity.Alumno;
 
 public interface AlumnoService {
@@ -32,7 +31,6 @@ public interface AlumnoService {
 	
 	public Iterable<Alumno> buscarPorNombreOApellidoNativa (String nombre);
 	
-	
 	public Iterable<Alumno> procedimientoAlumnosAltaHoy ();
 	
 	public Map<String, Number> procedimientosEstadisticosEdad ();
@@ -42,5 +40,7 @@ public interface AlumnoService {
 	public Page<Alumno> findAll (Pageable pageable);
 	
 	public Page<Alumno> buscarPorNombreOApellidoJQPLPaginado (String nombre, Pageable pageable);
+	
+	public Optional<FraseChuckNorris> obtenerFraseChuckAleatoria ();
 
 }

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.meyfp.alumnos.dto.FraseChuckNorris;
 import edu.meyfp.alumnos.repository.entity.Alumno;
 import edu.meyfp.alumnos.service.AlumnoService;
 
@@ -325,4 +326,26 @@ public class AlumnoController {
 			
 		return responseEntity;//representa el HTTP
 	}
+	
+	@GetMapping("/obtenerFraseChuck") //GET http://localhost:8081/alumno/obtenerFraseChuck
+	public ResponseEntity<?> obtenerFraseChuck()
+	{
+		ResponseEntity<?> responseEntity = null;
+		Optional<FraseChuckNorris> optional_fc = null;
+		
+			optional_fc = this.alumnoService.obtenerFraseChuckAleatoria();
+			if (optional_fc.isPresent())
+			{
+				//exsitías un alumno con ese id
+				FraseChuckNorris fraseChuckNorris = optional_fc.get();//200
+				responseEntity = ResponseEntity.ok(fraseChuckNorris);
+			} else {
+				responseEntity = ResponseEntity.noContent().build();//204
+			}
+					
+		
+		return responseEntity;//representa el HTTP
+	}
+	
+	
 }

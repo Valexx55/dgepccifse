@@ -33,4 +33,11 @@ public class FraseChuckNorris {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "FraseChuckNorris [value=" + value + "]";
+	}
+	
+	
+
 }
