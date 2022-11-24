@@ -10,6 +10,10 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.env.Environment;
+//import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +48,15 @@ public class AlumnoController {
 	
 	Logger logger = LoggerFactory.getLogger(AlumnoController.class);
 	
+	@Autowired
+	Environment environment;//acceder a la info del contexto - puerto
+	
+	/*@LocalServerPort //EN CLASE DE TESTING SÍ FUNCIONA, AQUÍ FALLA
+	int port;*/
+	
+	@Value("${instancia}")//obtengo el valor de las properties
+	String nombre_instancia;
+	
 	@GetMapping("/obtener-alumno-test") //GET http://localhost:8081/alumno/obtener-alumno-test
 	public Alumno obtenerAlumnoTest()
 	{
@@ -67,6 +80,12 @@ public class AlumnoController {
 			lista_alumnos = this.alumnoService.findAll();
 			responseEntity = ResponseEntity.ok(lista_alumnos);
 			logger.debug("Saliendo en listarAlumnos() "  + lista_alumnos);
+			
+			logger.debug("ATENDIDO POR EL MS " + this.nombre_instancia);
+			logger.debug("ATENDIDO POR EN EL PUERTO " + this.environment.getProperty("local.server.port"));
+			//logger.debug("ATENDIDO POR EN EL PUERTO corto " + this.port);
+			
+			
 		
 		return responseEntity;//representa el HTTP
 	}
