@@ -81,6 +81,8 @@ public class AlumnoController {
 	{
 		ResponseEntity<?> responseEntity = null;
 
+			//var saludo = "HOLA";
+			//saludo.charAt(10);
 			this.alumnoService.deleteById(id);
 			responseEntity = ResponseEntity.ok().build();
 
@@ -190,6 +192,22 @@ public class AlumnoController {
 	Iterable<Alumno> listaAlumnos = null;
 
 		 listaAlumnos = this.alumnoService.findByEdadBetween(edad_min, edad_max);
+		 responseEntity = ResponseEntity.ok(listaAlumnos);
+		 
+	return responseEntity;
+
+	}
+	
+	
+	//GET http://localhost:8081/alumno/buscarPorNombreOApellido/su
+	@GetMapping("/buscarPorNombreOApellido/{patron}")
+	public ResponseEntity<?> buscarPorNombreOApellido(@PathVariable String patron)
+	 {
+	
+	ResponseEntity<?> responseEntity = null;
+	Iterable<Alumno> listaAlumnos = null;
+
+		 listaAlumnos = this.alumnoService.busquedaPorNombreOApellidoNativa(patron);
 		 responseEntity = ResponseEntity.ok(listaAlumnos);
 		 
 	return responseEntity;

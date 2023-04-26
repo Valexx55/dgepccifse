@@ -73,6 +73,12 @@ public class AlumnoServiceImpl implements AlumnoService{
 
 		return this.alumnoRepository.findByEdadBetween(edad_min, edad_max);
 	}
+
+	@Override
+	public Iterable<Alumno> busquedaPorNombreOApellidoNativa(String patron) {
+		
+		return this.alumnoRepository.busquedaPorNombreOApellidoNativa(patron);
+	}
 	
 	//hacerMatricula
 	//try{

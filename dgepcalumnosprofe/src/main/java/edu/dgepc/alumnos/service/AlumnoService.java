@@ -18,5 +18,7 @@ public interface AlumnoService {
 	public Optional<Alumno> update (Alumno alumno, Long id);
 	//consultar alumnos en un rango de edad
 	public Iterable<Alumno> findByEdadBetween(int edad_min, int edad_max);
+	//consultar por nombre o apellido 
+	public Iterable<Alumno> busquedaPorNombreOApellidoNativa (String patron);
 
 }
