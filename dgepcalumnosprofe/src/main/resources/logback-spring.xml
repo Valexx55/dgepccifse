@@ -8,6 +8,8 @@
 		<appender-ref ref="FILE" />
 		<appender-ref ref="CONSOLE" />
 	</root>
+	<!--Aquí, le digo a spring. Todas las clases de este paquete, que muestren
+	los mensajes con prioridad INFO o superior-->
 	<logger name="org.springframework" level="INFO"/>
 	<!--<logger name="org.hibernate" level="TRACE"/>-->
 	<logger name="edu.dgepc.alumnos" level="DEBUG"/>
