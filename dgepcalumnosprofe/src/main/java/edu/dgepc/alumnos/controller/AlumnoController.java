@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ public class AlumnoController {
 
 	@Autowired
 	AlumnoService alumnoService;
+	
+	Logger logger = LoggerFactory.getLogger(AlumnoController.class);
 
 	// LEER TODOS LOS ALUMNOS - get
 	// GET http://localhost:8081/alummo
@@ -87,20 +91,32 @@ public class AlumnoController {
 	/// PUT http://localhost:8081/alummo/id ///// por ej: DELETE
 	// http://localhost:8081/alummo/8
 	@PutMapping("/{id}")
-	public ResponseEntity<?> modificarAlumnoPorID(@RequestBody Alumno alumno, @PathVariable Long id) // ResponseEntinty
+	public ResponseEntity<?> modificarAlumnoPorID(@Valid @RequestBody Alumno alumno, BindingResult bindingResult ,@PathVariable Long id) // ResponseEntinty
 																										// vuelta
 	{
 		ResponseEntity<?> responseEntity = null;
 		Optional<Alumno> optionalAlumno = null;
-
-			optionalAlumno = this.alumnoService.update(alumno, id);
-	
-			if (optionalAlumno.isPresent()) {
-				Alumno alumno_leido = optionalAlumno.get();
-				responseEntity = ResponseEntity.ok(alumno_leido);
-			} else {
-				responseEntity = ResponseEntity.notFound().build();// .header("saludo", "HOLA").build();
+		
+			logger.debug("En modificarAlumnoPorID");
+			if (bindingResult.hasErrors())
+			{
+				logger.debug("El alumno trae errores");
+				responseEntity = obtenerErrores(bindingResult);
 			}
+			else {
+				logger.debug("El alumno NO trae errores. CORRECTO");
+				optionalAlumno = this.alumnoService.update(alumno, id);
+				
+				if (optionalAlumno.isPresent()) {
+					Alumno alumno_leido = optionalAlumno.get();
+					responseEntity = ResponseEntity.ok(alumno_leido);
+				} else {
+					responseEntity = ResponseEntity.notFound().build();// .header("saludo", "HOLA").build();
+				}
+				
+			}
+
+			
 
 		return responseEntity;
 
@@ -112,7 +128,7 @@ public class AlumnoController {
 		List<ObjectError> listaErrores = null;
 		
 			listaErrores = bindingResult.getAllErrors();
-			//TODO: log de los fallos
+			listaErrores.forEach(error  -> logger.error(error.toString()));
 			responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listaErrores);
 		
 		
@@ -132,12 +148,16 @@ public class AlumnoController {
 				//INSERTAR
 			//si no, mensaje de ERROR 400
 		
+			logger.debug("EN crearAlumno");
+		
 			if (bindingResult.hasErrors())
 			{
 				//crearUnMensajeDeErrorComoRespuesta
+				logger.debug("El alumno trae errores");
 				responseEntity = obtenerErrores(bindingResult);
 			} else {
 				//sin errores --> insertar
+				logger.debug("El alumno NO traer errores. CORRECTO");
 				alumno_nuevo = this.alumnoService.save(alumno);
 				responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumno_nuevo);
 				
