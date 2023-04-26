@@ -16,5 +16,7 @@ public interface AlumnoService {
 	public void deleteById (Long id);
 	//modificar
 	public Optional<Alumno> update (Alumno alumno, Long id);
+	//consultar alumnos en un rango de edad
+	public Iterable<Alumno> findByEdadBetween(int edad_min, int edad_max);
 
 }

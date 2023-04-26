@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dgepc.alumnos.model.Alumno;
@@ -176,6 +177,23 @@ public class AlumnoController {
 			alumno = new Alumno(5l, "Jesus", "Gutierrez", "jguti@correo.es", new Date(), 3);
 
 		return alumno;
+	}
+	
+	//GET http://localhost:8081/alumno/find-by-edad-between?edadmin=5&edadmax=60
+	
+	@GetMapping("/find-by-edad-between")
+	public ResponseEntity<?> findByEdadBetween(
+			@RequestParam(required = true, name = "edadmin") int edad_min, 
+			@RequestParam(required = true, name = "edadmax") int edad_max) {
+	
+	ResponseEntity<?> responseEntity = null;
+	Iterable<Alumno> listaAlumnos = null;
+
+		 listaAlumnos = this.alumnoService.findByEdadBetween(edad_min, edad_max);
+		 responseEntity = ResponseEntity.ok(listaAlumnos);
+		 
+	return responseEntity;
+
 	}
 
 }
