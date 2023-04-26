@@ -1,12 +1,17 @@
 package edu.dgepc.alumnos.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,18 +105,44 @@ public class AlumnoController {
 		return responseEntity;
 
 	}
+	
+	private ResponseEntity<?> obtenerErrores(BindingResult bindingResult)
+	{
+		ResponseEntity<?> responseEntity = null;
+		List<ObjectError> listaErrores = null;
+		
+			listaErrores = bindingResult.getAllErrors();
+			//TODO: log de los fallos
+			responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listaErrores);
+		
+		
+		return responseEntity;
+	}
 	// CREAR UN ALUMNO - post
 
 	/// POST http://localhost:8081/alummo ///// por ej: POST
 	/// http://localhost:8081/alummo
 	@PostMapping
-	public ResponseEntity<?> crearAlumno(@RequestBody Alumno alumno) // ResponseEntinty el paquete HTTP de vuelta
+	public ResponseEntity<?> crearAlumno(@Valid @RequestBody Alumno alumno, BindingResult bindingResult ) // ResponseEntinty el paquete HTTP de vuelta
 	{
 		ResponseEntity<?> responseEntity = null;
 		Alumno alumno_nuevo = null;
-
-			alumno_nuevo = this.alumnoService.save(alumno);
-			responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumno_nuevo);
+		
+			//si el alumno es válido
+				//INSERTAR
+			//si no, mensaje de ERROR 400
+		
+			if (bindingResult.hasErrors())
+			{
+				//crearUnMensajeDeErrorComoRespuesta
+				responseEntity = obtenerErrores(bindingResult);
+			} else {
+				//sin errores --> insertar
+				alumno_nuevo = this.alumnoService.save(alumno);
+				responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumno_nuevo);
+				
+			}
+			
 
 		return responseEntity;
 
@@ -122,7 +153,7 @@ public class AlumnoController {
 	public Alumno obtenerAlumnoTest() {
 		Alumno alumno = null; // transiente
 
-			alumno = new Alumno(5l, "Jesus", "Gutierrez", "jguti@correo.es", new Date());
+			alumno = new Alumno(5l, "Jesus", "Gutierrez", "jguti@correo.es", new Date(), 3);
 
 		return alumno;
 	}
