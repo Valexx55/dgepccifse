@@ -111,6 +111,13 @@ public class Alumno {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		return "Alumno [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", creadoEn="
+				+ creadoEn + ", edad=" + edad + "]";
+	}
+
+	
 	
 	
 	

@@ -6,8 +6,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import edu.dgepc.alumnos.model.Alumno;
+import edu.dgepc.alumnos.model.FraseChiquito;
 import edu.dgepc.alumnos.repository.AlumnoRepository;
 
 @Service
@@ -78,6 +80,20 @@ public class AlumnoServiceImpl implements AlumnoService{
 	public Iterable<Alumno> busquedaPorNombreOApellidoNativa(String patron) {
 		
 		return this.alumnoRepository.busquedaPorNombreOApellidoNativa(patron);
+	}
+
+	@Override
+	public Optional<FraseChiquito> obtenerFraseAleatoriaChiquito() {
+		// TODO CONSUMIR EL API REST DE CHIQUITO https://api.chiquito.ws/
+		Optional<FraseChiquito> optional = Optional.empty();
+		FraseChiquito fraseChiquito = null;
+		RestTemplate restTemplate = null;
+		
+			restTemplate = new RestTemplate();
+			fraseChiquito = restTemplate.getForObject("https://api.chiquito.ws/", FraseChiquito.class);
+			optional = Optional.of(fraseChiquito);
+		
+		return optional;
 	}
 	
 	//hacerMatricula

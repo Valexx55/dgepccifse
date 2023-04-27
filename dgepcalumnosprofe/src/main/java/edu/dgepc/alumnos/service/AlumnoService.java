@@ -3,6 +3,7 @@ package edu.dgepc.alumnos.service;
 import java.util.Optional;
 
 import edu.dgepc.alumnos.model.Alumno;
+import edu.dgepc.alumnos.model.FraseChiquito;
 
 public interface AlumnoService {
 	
@@ -20,5 +21,8 @@ public interface AlumnoService {
 	public Iterable<Alumno> findByEdadBetween(int edad_min, int edad_max);
 	//consultar por nombre o apellido 
 	public Iterable<Alumno> busquedaPorNombreOApellidoNativa (String patron);
+	
+	//
+	public Optional<FraseChiquito> obtenerFraseAleatoriaChiquito ();
 
 }

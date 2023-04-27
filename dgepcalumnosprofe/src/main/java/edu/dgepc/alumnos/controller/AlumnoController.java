@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dgepc.alumnos.model.Alumno;
+import edu.dgepc.alumnos.model.FraseChiquito;
 import edu.dgepc.alumnos.service.AlumnoService;
 
 //@CrossOrigin(origins = {"*"}, methods = {RequestMethod.GET})
@@ -214,6 +215,25 @@ public class AlumnoController {
 		 responseEntity = ResponseEntity.ok(listaAlumnos);
 		 
 	return responseEntity;
+
+	}
+	//GET http://localhost:8081/alumno/obtenerFraseChiquito
+	@GetMapping("/obtenerFraseChiquito")
+	public ResponseEntity<?> obtenerFraseChiquito() // ResponseEntinty el paquete HTTP de vuelta
+	{
+		ResponseEntity<?> responseEntity = null;
+		Optional<FraseChiquito> optionalFrase = null;
+
+			optionalFrase = this.alumnoService.obtenerFraseAleatoriaChiquito();
+			// si está el id por el que pregunta, le doy un 200 y el almuno
+			if (optionalFrase.isPresent()) {
+				FraseChiquito fraseChiquito = optionalFrase.get();
+				responseEntity = ResponseEntity.ok(fraseChiquito);
+			} else {
+				responseEntity = ResponseEntity.noContent().build();// .header("saludo", "HOLA").build();
+			}
+
+		return responseEntity;
 
 	}
 
