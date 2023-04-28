@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>edu.dgepc.eureka</groupId>
-	<artifactId>servidoreureka</artifactId>
+	<artifactId>servidoreurekaprofe</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>servidoreureka</name>
+	<name>servidoreurekaprofe</name>
 	<description>Servidor Eureka DGEPC</description>
 	<properties>
 		<java.version>17</java.version>
@@ -22,10 +22,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
