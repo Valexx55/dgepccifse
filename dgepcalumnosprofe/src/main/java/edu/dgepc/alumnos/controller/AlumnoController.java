@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,12 @@ public class AlumnoController {
 	AlumnoService alumnoService;
 	
 	Logger logger = LoggerFactory.getLogger(AlumnoController.class);
+	
+	@Value("${instancia}")
+	String instancia;
+	
+	@Autowired
+	Environment environment;
 
 	// LEER TODOS LOS ALUMNOS - get
 	// GET http://localhost:8081/alummo
@@ -48,6 +56,9 @@ public class AlumnoController {
 		ResponseEntity<?> responseEntity = null;
 		Iterable<Alumno> listaAlumnos = null;
 
+			logger.debug("en listar alumnos");
+			logger.debug("ATENDIDO POR LA INSTANCIA "+ instancia);
+			logger.debug("ATENDIDO EN EL PUERTO " + environment.getProperty("local.server.port"));
 			listaAlumnos = this.alumnoService.findAll();
 			responseEntity = ResponseEntity.ok(listaAlumnos);
 
