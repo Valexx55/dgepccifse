@@ -61,4 +61,10 @@ public class DetalleUsuario implements UserDetails {
 		return this.usuario.getActivada();
 	}
 
+	public String getNombre ()
+	{
+		return this.usuario.getNombre();
+	}
+	
+	
 }
